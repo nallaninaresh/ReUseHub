@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "npm --prefix frontend install",
-    "build": "npm --prefix frontend run build",
-    "start": "npm --prefix frontend run preview"
+    "postinstall": "cd frontend && npm install",
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd frontend && npm run build && npx vite preview"
   }
 }
-
