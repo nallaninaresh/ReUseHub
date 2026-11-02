@@ -84,6 +84,41 @@ npm run dev
 
 ---
 
+## 🌐 Deploy to Render
+
+ReUseHub is fully configured for deployment on [Render](https://render.com).
+
+### Option A: Render Blueprint (Recommended - 1-Click Deployment)
+1. Push your repository to GitHub.
+2. In the Render Dashboard, click **New +** > **Blueprint**.
+3. Select your repository. Render reads [`render.yaml`](file:///c:/Users/nalla/OneDrive/Desktop/ReUseHub/render.yaml) and automatically configures:
+   - **Backend**: Docker Web Service running Spring Boot 3 on Java 21.
+   - **Frontend**: Global CDN Static Site running React 18 + Vite with SPA routing rewrites.
+4. Click **Apply**.
+5. Once deployed, copy your backend URL (e.g. `https://reusehub-backend.onrender.com`) and update `VITE_API_URL` in the frontend static site settings to `https://<backend-url>/api/v1`. Also set `ALLOWED_ORIGINS` on the backend to include your frontend URL.
+
+### Option B: Manual Setup on Render
+1. **Backend (Web Service)**:
+   - **Name**: `reusehub-backend`
+   - **Root Directory**: `backend`
+   - **Environment / Runtime**: `Docker`
+   - **Health Check Path**: `/api/v1/health`
+   - **Environment Variables**:
+     - `PORT`: `10000`
+     - `ALLOWED_ORIGINS`: `https://your-frontend.onrender.com`
+     - `DATABASE_URL`: *(Optional)* Render PostgreSQL connection string or leave blank for embedded H2.
+2. **Frontend (Static Site)**:
+   - **Name**: `reusehub-frontend`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+   - **Environment Variables**:
+     - `VITE_API_URL`: `https://your-backend.onrender.com/api/v1`
+   - **Redirects / Rewrites**:
+     - Add rewrite rule: `/*` -> `/index.html` (Rewrite)
+
+---
+
 ## 👤 Author
 
 Developed by **[Naresh Nallani](https://github.com/Naresh1817)**

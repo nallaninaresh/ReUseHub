@@ -36,6 +36,8 @@ public class SecurityConfig {
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)) // Allows H2 console if needed
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Health check endpoint for cloud hosting
+                .requestMatchers("/health").permitAll()
                 // Public auth endpoints
                 .requestMatchers("/auth/**").permitAll()
                 // Public browsing endpoints
